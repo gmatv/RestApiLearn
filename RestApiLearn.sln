@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestApiLearn", "RestApiLearn\RestApiLearn.csproj", "{BB1DFBE0-3644-4443-82AE-77D145D3C05D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestApiLearn", "RestApiLearn\RestApiLearn.csproj", "{BB1DFBE0-3644-4443-82AE-77D145D3C05D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestApiLearnTest", "RestApiLearnTest\RestApiLearnTest.csproj", "{6829F787-8B31-4D11-890B-2D78B84F40AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{BB1DFBE0-3644-4443-82AE-77D145D3C05D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB1DFBE0-3644-4443-82AE-77D145D3C05D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB1DFBE0-3644-4443-82AE-77D145D3C05D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6829F787-8B31-4D11-890B-2D78B84F40AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6829F787-8B31-4D11-890B-2D78B84F40AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6829F787-8B31-4D11-890B-2D78B84F40AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6829F787-8B31-4D11-890B-2D78B84F40AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

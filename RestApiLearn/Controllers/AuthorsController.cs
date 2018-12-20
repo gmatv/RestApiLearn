@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RestApiLearn.Dto;
-using RestApiLearn.Entities;
-using RestApiLearn.Helpers;
 using RestApiLearn.Services;
 
 namespace RestApiLearn.Controllers
@@ -24,14 +22,19 @@ namespace RestApiLearn.Controllers
         [HttpGet]
         public IEnumerable<AuthorDto> GetAuthors()
         {
-
-            //_mapper.Map<>()
-            var authorDtos = _libraryRepository
-                .GetAuthors()
-                .Select(a => _mapper.Map<AuthorDto>(a))
-                .ToList();
+            var authors = _libraryRepository.GetAuthors();
+            var authorDtos = _mapper.Map<IEnumerable<AuthorDto>>(authors);
 
             return authorDtos;
+        }
+        
+        [HttpGet("{id}")]
+        public AuthorDto GetAuthor(Guid id)
+        {
+            var author = _libraryRepository.GetAuthor(id);
+            var authorDto = _mapper.Map<AuthorDto>(author);
+
+            return authorDto;
         }
     }
 }
