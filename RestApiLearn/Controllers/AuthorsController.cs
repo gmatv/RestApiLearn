@@ -8,7 +8,7 @@ using RestApiLearn.Services;
 namespace RestApiLearn.Controllers
 {
     [Route("api/[controller]")]
-    public class AuthorsController
+    public class AuthorsController : ControllerBase
     {
         private readonly ILibraryRepository _libraryRepository;
         private readonly IMapper _mapper;
@@ -27,14 +27,21 @@ namespace RestApiLearn.Controllers
 
             return authorDtos;
         }
-        
+
         [HttpGet("{id}")]
-        public AuthorDto GetAuthor(Guid id)
+        public IActionResult GetAuthor(Guid id)
         {
+            return BadRequest(new { error = "Error message" });
+
             var author = _libraryRepository.GetAuthor(id);
+            if (author == null)
+            {
+                return NotFound();
+            }
+
             var authorDto = _mapper.Map<AuthorDto>(author);
 
-            return authorDto;
+            return Ok(authorDto);
         }
     }
 }
