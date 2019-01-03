@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RestApiLearn.Controllers;
 using RestApiLearn.Entities;
+using RestApiLearn.Filters;
 using RestApiLearn.Helpers;
 using RestApiLearn.Services;
 
@@ -30,7 +31,9 @@ namespace RestApiLearn
 
             // services.AddAutoMapper(); // we need this when we register maps via AutoMapper.Profile
             AutomapperHelper.Initialize();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+                .AddMvc(options => { options.Filters.Add<ExceptionFilter>(); })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSingleton(Mapper.Instance);
             services.AddScoped<ILibraryRepository, LibraryRepository>();

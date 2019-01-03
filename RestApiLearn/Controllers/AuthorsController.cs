@@ -31,8 +31,6 @@ namespace RestApiLearn.Controllers
         [HttpGet("{id}")]
         public IActionResult GetAuthor(Guid id)
         {
-            return BadRequest(new { error = "Error message" });
-
             var author = _libraryRepository.GetAuthor(id);
             if (author == null)
             {
