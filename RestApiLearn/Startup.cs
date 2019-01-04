@@ -31,8 +31,11 @@ namespace RestApiLearn
 
             // services.AddAutoMapper(); // we need this when we register maps via AutoMapper.Profile
             AutomapperHelper.Initialize();
-            services
-                .AddMvc(options => { options.Filters.Add<ExceptionFilter>(); })
+            services.AddMvc(options =>
+                {
+                    options.Filters.Add<ExceptionFilter>();
+                    options.ReturnHttpNotAcceptable = true;
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSingleton(Mapper.Instance);

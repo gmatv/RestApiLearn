@@ -15,6 +15,8 @@ namespace RestApiLearn.Helpers
                     .ForMember(dest => dest.Age, opt => opt.MapFrom(a => a.DateOfBirth.GetCurrentAge()));
 
                 cfg.CreateMap<Book, BookDto>();
+
+                cfg.CreateMap<CreateAuthorDto, Author>();
             });
         }
     }

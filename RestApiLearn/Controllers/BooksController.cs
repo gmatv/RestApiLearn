@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RestApiLearn.Dto;
+using RestApiLearn.Entities;
 using RestApiLearn.Services;
 
 namespace RestApiLearn.Controllers
@@ -48,6 +49,22 @@ namespace RestApiLearn.Controllers
 
             var bookForAuthorDto = _mapper.Map<BookDto>(_libraryRepository.GetBookForAuthor(authorId, bookId));
 
+            return Ok(bookForAuthorDto);
+        }
+
+        [HttpPost]
+        public IActionResult AddBookForAuthor(Guid authorId, [FromBody] CreateBookDto createBookDto)
+        {
+            var book = new Book
+            {
+                Id = Guid.NewGuid(),
+                AuthorId = authorId,
+                Title = createBookDto.Title,
+                Description = createBookDto.Description
+            };
+            _libraryRepository.AddBookForAuthor(authorId, book);
+            _libraryRepository.Save();
+            var bookForAuthorDto = _mapper.Map<BookDto>(book);
             return Ok(bookForAuthorDto);
         }
     }
