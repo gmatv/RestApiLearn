@@ -16,7 +16,13 @@ namespace RestApiLearn.Helpers
 
                 cfg.CreateMap<Book, BookDto>();
 
-                cfg.CreateMap<CreateAuthorDto, Author>();
+                cfg.CreateMap<CreateAuthorDto, Author>()
+                    .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+                cfg.CreateMap<CreateBookDto, Book>()
+                    .ForMember(dest => dest.Id, opt => opt.Ignore())
+                    .ForMember(dest => dest.Author, opt => opt.Ignore())
+                    .ForMember(dest => dest.AuthorId, opt => opt.Ignore());
             });
         }
     }

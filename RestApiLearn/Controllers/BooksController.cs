@@ -65,7 +65,7 @@ namespace RestApiLearn.Controllers
             _libraryRepository.AddBookForAuthor(authorId, book);
             _libraryRepository.Save();
             var bookForAuthorDto = _mapper.Map<BookDto>(book);
-            return Ok(bookForAuthorDto);
+            return CreatedAtAction("GetBookForAuthor", new {authorId, bookId = book.Id}, bookForAuthorDto);
         }
     }
 }
