@@ -65,5 +65,30 @@ namespace RestApiLearn.Controllers
 
             return Ok(authorDtos);
         }
+
+        [HttpGet("({ids})")]
+        public IActionResult DeleteAuthorCollection([ModelBinder(typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
+        {
+            if (ids == null)
+            {
+                return BadRequest();
+            }
+
+            var authors = _libraryRepository.GetAuthors(ids);
+
+            if (authors.Count() != ids.Count())
+            {
+                return NotFound();
+            }
+
+            foreach (var author in authors)
+            {
+                _libraryRepository.DeleteAuthor(author);
+            }
+
+            _libraryRepository.Save();
+
+            return NoContent();
+        }
     }
 }

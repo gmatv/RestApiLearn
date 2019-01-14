@@ -33,21 +33,21 @@ namespace RestApiLearn.Controllers
             return Ok(booksForAuthor);
         }
 
-        [HttpGet("{bookId}")]
-        public IActionResult GetBookForAuthor(Guid authorId, Guid bookId)
+        [HttpGet("{id}")]
+        public IActionResult GetBookForAuthor(Guid authorId, Guid id)
         {
             if (!_libraryRepository.AuthorExists(authorId))
             {
                 return NotFound();
             }
 
-            var bookForAuthor = _libraryRepository.GetBookForAuthor(authorId, bookId);
+            var bookForAuthor = _libraryRepository.GetBookForAuthor(authorId, id);
             if (bookForAuthor == null)
             {
                 return NotFound();
             }
 
-            var bookForAuthorDto = _mapper.Map<BookDto>(_libraryRepository.GetBookForAuthor(authorId, bookId));
+            var bookForAuthorDto = _mapper.Map<BookDto>(_libraryRepository.GetBookForAuthor(authorId, id));
 
             return Ok(bookForAuthorDto);
         }
@@ -66,6 +66,21 @@ namespace RestApiLearn.Controllers
             _libraryRepository.Save();
             var bookForAuthorDto = _mapper.Map<BookDto>(book);
             return CreatedAtAction("GetBookForAuthor", new {authorId, bookId = book.Id}, bookForAuthorDto);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteBookForAuthor(Guid authorId, Guid id)
+        {
+            var book = _libraryRepository.GetBookForAuthor(authorId, id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            _libraryRepository.DeleteBook(book);
+            _libraryRepository.Save();
+
+            return NoContent();
         }
     }
 }

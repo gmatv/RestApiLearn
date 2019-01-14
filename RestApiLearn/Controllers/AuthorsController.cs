@@ -60,5 +60,20 @@ namespace RestApiLearn.Controllers
 
             return CreatedAtAction("GetAuthor", new {id = author.Id}, authorDto);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteAuthor(Guid id)
+        {
+            var author = _libraryRepository.GetAuthor(id);
+            if (author == null)
+            {
+                return NotFound();
+            }
+
+            _libraryRepository.DeleteAuthor(author);
+            _libraryRepository.Save();
+
+            return NoContent();
+        }
     }
 }
