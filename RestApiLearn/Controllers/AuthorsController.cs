@@ -30,7 +30,7 @@ namespace RestApiLearn.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetAuthor(Guid id)
+        public ActionResult<AuthorDto> GetAuthor(Guid id)
         {
             var author = _libraryRepository.GetAuthor(id);
             if (author == null)

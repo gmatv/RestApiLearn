@@ -23,6 +23,12 @@ namespace RestApiLearn.Helpers
                     .ForMember(dest => dest.Id, opt => opt.Ignore())
                     .ForMember(dest => dest.Author, opt => opt.Ignore())
                     .ForMember(dest => dest.AuthorId, opt => opt.Ignore());
+
+                cfg.CreateMap<UpdateBookDto, Book>()
+                    .ForMember(dest => dest.Id, opt => opt.Ignore())
+                    .ForMember(dest => dest.Author, opt => opt.Ignore())
+                    .ForMember(dest => dest.AuthorId, opt => opt.Ignore())
+                    .ReverseMap();
             });
         }
     }
