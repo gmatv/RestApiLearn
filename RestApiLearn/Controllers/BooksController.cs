@@ -113,7 +113,7 @@ namespace RestApiLearn.Controllers
                 _mapper.Map(updateBookDto, book);
                 _libraryRepository.Save();
 
-                return Ok();
+                return NoContent();
             }
         }
 
