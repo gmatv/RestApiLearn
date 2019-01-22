@@ -56,6 +56,11 @@ namespace RestApiLearn.Controllers
         [HttpPost]
         public IActionResult AddBookForAuthor(Guid authorId, [FromBody] CreateBookDto createBookDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
             var book = new Book
             {
                 Id = Guid.NewGuid(),
