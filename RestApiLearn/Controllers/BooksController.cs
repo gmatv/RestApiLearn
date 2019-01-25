@@ -56,6 +56,16 @@ namespace RestApiLearn.Controllers
         [HttpPost]
         public IActionResult AddBookForAuthor(Guid authorId, [FromBody] CreateBookDto createBookDto)
         {
+            if (createBookDto == null)
+            {
+                return BadRequest();
+            }
+
+            if (createBookDto.Title == createBookDto.Description)
+            {
+                ModelState.AddModelError(nameof(CreateBookDto), "Title and Description can't be the same.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return UnprocessableEntity(ModelState);
@@ -125,11 +135,6 @@ namespace RestApiLearn.Controllers
         [HttpPatch("{id}")]
         public IActionResult PartiallyUpdateBookForAuthor(Guid authorId, Guid id, [FromBody] JsonPatchDocument<UpdateBookDto> patchBook)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
             var book = _libraryRepository.GetBookForAuthor(authorId, id);
 
             if (book == null)
@@ -139,7 +144,12 @@ namespace RestApiLearn.Controllers
 
             var updateBookDto = _mapper.Map<UpdateBookDto>(book);
 
-            patchBook.ApplyTo(updateBookDto);
+            patchBook.ApplyTo(updateBookDto, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
 
             _mapper.Map(updateBookDto, book);
 
