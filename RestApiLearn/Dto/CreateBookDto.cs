@@ -1,14 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace RestApiLearn.Dto
+﻿namespace RestApiLearn.Dto
 {
-    public class CreateBookDto
+    public class CreateBookDto : BookBaseDto
     {
-        [Required]
-        [MaxLength(100)]
-        public string Title { get; set; }
 
-        [MaxLength(500)]
-        public string Description { get; set; }
     }
 }

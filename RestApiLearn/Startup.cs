@@ -1,12 +1,11 @@
-﻿using System.Reflection;
-using AutoMapper;
+﻿using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RestApiLearn.Controllers;
 using RestApiLearn.Entities;
 using RestApiLearn.Filters;
 using RestApiLearn.Helpers;
@@ -36,7 +35,8 @@ namespace RestApiLearn
                     options.Filters.Add<ExceptionFilter>();
                     options.ReturnHttpNotAcceptable = true;
                 })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(GetType().Assembly));
 
             services.AddSingleton(Mapper.Instance);
             services.AddScoped<ILibraryRepository, LibraryRepository>();

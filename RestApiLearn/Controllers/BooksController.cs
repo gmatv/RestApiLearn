@@ -61,11 +61,6 @@ namespace RestApiLearn.Controllers
                 return BadRequest();
             }
 
-            if (createBookDto.Title == createBookDto.Description)
-            {
-                ModelState.AddModelError(nameof(CreateBookDto), "Title and Description can't be the same.");
-            }
-
             if (!ModelState.IsValid)
             {
                 return UnprocessableEntity(ModelState);
