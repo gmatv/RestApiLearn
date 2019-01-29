@@ -102,6 +102,11 @@ namespace RestApiLearn.Controllers
                 return NotFound();
             }
 
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
             var book = _libraryRepository.GetBookForAuthor(authorId, id);
             if (book == null)
             {
@@ -140,6 +145,8 @@ namespace RestApiLearn.Controllers
             var updateBookDto = _mapper.Map<UpdateBookDto>(book);
 
             patchBook.ApplyTo(updateBookDto, ModelState);
+
+            TryValidateModel(updateBookDto);
 
             if (!ModelState.IsValid)
             {
