@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using RestApiLearn.Dto;
 using RestApiLearn.Entities;
 using RestApiLearn.Services;
@@ -14,11 +15,13 @@ namespace RestApiLearn.Controllers
     {
         private readonly ILibraryRepository _libraryRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<BooksController> _logger;
 
-        public BooksController(ILibraryRepository libraryRepository, IMapper mapper)
+        public BooksController(ILibraryRepository libraryRepository, IMapper mapper, ILogger<BooksController> logger)
         {
             _libraryRepository = libraryRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -90,6 +93,8 @@ namespace RestApiLearn.Controllers
 
             _libraryRepository.DeleteBook(book);
             _libraryRepository.Save();
+            
+            _logger.LogInformation("Book {id} for author {authorId} was deleted", id, authorId);
 
             return NoContent();
         }
