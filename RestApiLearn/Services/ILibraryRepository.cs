@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using RestApiLearn.Entities;
+using X.PagedList;
 
 namespace RestApiLearn.Services
 {
     public interface ILibraryRepository
     {
         IEnumerable<Author> GetAuthors();
+        IPagedList<Author> GetAuthors(Pagination pagination);
         Author GetAuthor(Guid authorId);
         IEnumerable<Author> GetAuthors(IEnumerable<Guid> authorIds);
         void AddAuthor(Author author);

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestApiLearn.Dto;
 using RestApiLearn.Entities;
 using RestApiLearn.Services;
+using X.PagedList;
 
 namespace RestApiLearn.Controllers
 {
@@ -21,12 +22,18 @@ namespace RestApiLearn.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<AuthorDto> GetAuthors()
+        public ActionResult GetAuthors(Pagination pagination)
         {
-            var authors = _libraryRepository.GetAuthors();
+            IPagedList<Author> authors = _libraryRepository.GetAuthors(pagination);
             var authorDtos = _mapper.Map<IEnumerable<AuthorDto>>(authors);
 
-            return authorDtos;
+            var result = new
+            {
+                meta = authors.GetMetaData(),
+                value = authorDtos
+            };
+
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

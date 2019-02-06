@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RestApiLearn.Entities;
+using X.PagedList;
 
 namespace RestApiLearn.Services
 {
@@ -66,14 +67,22 @@ namespace RestApiLearn.Services
 
         public IEnumerable<Author> GetAuthors()
         {
-            return _context.Authors.OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
+            var authors = _context.Authors.OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
+            return authors;
+        }
+
+        public IPagedList<Author> GetAuthors(Pagination pagination)
+        {
+            var authors = _context.Authors.OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
+            var pagedList = new PagedList<Author>(authors, pagination.PageNumber, pagination.PageSize);
+            return pagedList;
         }
 
         public IEnumerable<Author> GetAuthors(IEnumerable<Guid> authorIds)
         {
             return _context.Authors.Where(a => authorIds.Contains(a.Id))
                 .OrderBy(a => a.FirstName)
-                .OrderBy(a => a.LastName)
+                .ThenBy(a => a.LastName)
                 .ToList();
         }
 
