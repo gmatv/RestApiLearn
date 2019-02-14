@@ -19,9 +19,14 @@ namespace RestApiLearn.Filters
         {
             string message = (context.Exception.InnerException ?? context.Exception).Message;
             var errorInfo = new ErrorInfo(message);
-            context.Result = new JsonResult(errorInfo) { StatusCode = (int)HttpStatusCode.InternalServerError };
+            int statusCode = (int) HttpStatusCode.InternalServerError;
+            if (context.Exception is ValidationException)
+            {
+                statusCode = (int) HttpStatusCode.BadRequest;
+            }
+            context.Result = new JsonResult(errorInfo) { StatusCode = statusCode };
 
-            _logger.LogError(500, context.Exception, message);
+            _logger.LogError(statusCode, context.Exception, message);
         }
     }
 }

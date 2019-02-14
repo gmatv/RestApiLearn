@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RestApiLearn.Entities;
 using X.PagedList;
+using System.Linq.Dynamic.Core;
 
 namespace RestApiLearn.Services
 {
@@ -68,12 +69,30 @@ namespace RestApiLearn.Services
         public IEnumerable<Author> GetAuthors()
         {
             var authors = _context.Authors.OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
+
             return authors;
         }
 
-        public IPagedList<Author> GetAuthors(Pagination pagination)
+        public IPagedList<Author> GetAuthors(Pagination pagination, AuthorFilter authorFilter, string orderBy)
         {
-            var authors = _context.Authors.OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
+
+            IQueryable<Author> authors;
+            if (string.IsNullOrWhiteSpace(authorFilter?.Genre))
+            {
+                authors = _context.Authors;
+            }
+            else
+            {
+                authors = _context.Authors.Where(a => a.Genre.ToLower() == authorFilter.Genre.ToLower());
+            }
+
+            //            authors = authors.OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
+            // dynamic linq
+            if (!string.IsNullOrWhiteSpace(orderBy))
+            {
+                authors = authors.OrderBy(orderBy);
+            }
+
             var pagedList = new PagedList<Author>(authors, pagination.PageNumber, pagination.PageSize);
             return pagedList;
         }

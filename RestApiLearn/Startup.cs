@@ -29,7 +29,7 @@ namespace RestApiLearn
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // services.AddAutoMapper(); // we need this when we register maps via AutoMapper.Profile
-            AutomapperHelper.Initialize();
+            AutomapperConfig.Initialize();
             services.AddMvc(options =>
                 {
                     options.Filters.Add<ExceptionFilter>();

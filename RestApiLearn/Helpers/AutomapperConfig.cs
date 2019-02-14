@@ -4,7 +4,7 @@ using RestApiLearn.Entities;
 
 namespace RestApiLearn.Helpers
 {
-    public static class AutomapperHelper
+    public static class AutomapperConfig
     {
         public static void Initialize()
         {

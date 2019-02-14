@@ -15,7 +15,7 @@ namespace RestApiLearnTest
         public AutomapperTest()
         {
             Mapper.Reset();
-            AutomapperHelper.Initialize();
+            AutomapperConfig.Initialize();
         }
 
         [Fact]

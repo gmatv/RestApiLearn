@@ -8,7 +8,7 @@ namespace RestApiLearn.Services
     public interface ILibraryRepository
     {
         IEnumerable<Author> GetAuthors();
-        IPagedList<Author> GetAuthors(Pagination pagination);
+        IPagedList<Author> GetAuthors(Pagination pagination, AuthorFilter authorFilter, string orderBy);
         Author GetAuthor(Guid authorId);
         IEnumerable<Author> GetAuthors(IEnumerable<Guid> authorIds);
         void AddAuthor(Author author);

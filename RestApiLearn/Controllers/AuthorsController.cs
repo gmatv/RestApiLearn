@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RestApiLearn.Dto;
+using RestApiLearn.Dto.Soritng;
 using RestApiLearn.Entities;
 using RestApiLearn.Services;
 using X.PagedList;
@@ -22,9 +23,12 @@ namespace RestApiLearn.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetAuthors(Pagination pagination)
+        public ActionResult GetAuthors(Pagination pagination, AuthorFilter authorFilter, string orderBy)
         {
-            IPagedList<Author> authors = _libraryRepository.GetAuthors(pagination);
+            var authorOrder = new AuthorOrder();
+            var orderByEntities = authorOrder.MapToEntities(orderBy);
+
+            IPagedList<Author> authors = _libraryRepository.GetAuthors(pagination, authorFilter, orderByEntities);
             var authorDtos = _mapper.Map<IEnumerable<AuthorDto>>(authors);
 
             var result = new
