@@ -1,31 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using RestApiLearn.Entities;
+using System.Linq;
 using RestApiLearn.Exceptions;
 
-namespace RestApiLearn.Dto.Soritng
+namespace RestApiLearn.Sorting
 {
-    /// <summary>
-    /// TODO: Make default mapping for same fields
-    /// TODO: Unit test
-    /// </summary>
-    public class AuthorOrder
+    public static class OrderMapper
     {
+        private static Dictionary<Type, Dictionary<string, OrderDestination>> _typeMap =
+            new Dictionary<Type, Dictionary<string, OrderDestination>>();
 
-        private readonly Dictionary<string, OrderDestination> _mapping = new Dictionary<string, OrderDestination>
+        public static void Register<TSource, TDestination>()
         {
+            var map = new Dictionary<string, OrderDestination>();
+            var sourceNames = typeof(TSource).GetProperties().Select(p => p.Name.ToLower());
+            var destNames = typeof(TDestination).GetProperties().Select(p => p.Name.ToLower()).ToList();
+            foreach (var sourceName in sourceNames)
             {
-                nameof(AuthorDto.Name).ToLower(),
-                new OrderDestination {Columns = new[] {nameof(Author.FirstName), nameof(Author.LastName)}}
-            },
-            {
-                nameof(AuthorDto.Age).ToLower(),
-                new OrderDestination {Columns = new[] {nameof(Author.DateOfBirth)}, Reverse = true}
+                if (destNames.Contains(sourceName))
+                {
+                    var orderDestination = new OrderDestination
+                    {
+                        Columns = new[] {sourceName}
+                    };
+                    map.Add(sourceName, orderDestination);
+                }
             }
-        };
 
-        public string MapToEntities(string orderBy)
+            _typeMap.Add(typeof(TDestination), map);
+        }
+
+        public static string MapTo<TDestination>(string orderBy)
         {
+
+            if (!_typeMap.TryGetValue(typeof(TDestination), out Dictionary<string, OrderDestination> map))
+            {
+                ThrowException();
+            }
+
             var mappedFields = new List<string>();
 
             // 1. Split by comma
@@ -37,12 +49,12 @@ namespace RestApiLearn.Dto.Soritng
             foreach (var fieldsWithDirection in fieldsWithDirections)
             {
                 var parts = fieldsWithDirection.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length == 0 ||parts.Length > 2)
+                if (parts.Length == 0 || parts.Length > 2)
                 {
                     ThrowException();
                 }
 
-                if (!_mapping.ContainsKey(parts[0]))
+                if (!map.ContainsKey(parts[0]))
                 {
                     ThrowException();
                 }
@@ -71,7 +83,7 @@ namespace RestApiLearn.Dto.Soritng
                 }
 
                 string sourceFieldName = parts[0].ToLower();
-                OrderDestination orderDestination = _mapping[sourceFieldName];
+                OrderDestination orderDestination = map[sourceFieldName];
                 if (orderDestination.Reverse)
                 {
                     ascending = !ascending;

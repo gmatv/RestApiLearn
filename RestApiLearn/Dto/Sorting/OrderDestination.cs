@@ -1,4 +1,4 @@
-﻿namespace RestApiLearn.Dto.Soritng
+﻿namespace RestApiLearn.Dto.Sorting
 {
     public class OrderDestination
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RestApiLearn.Dto;
-using RestApiLearn.Dto.Soritng;
+using RestApiLearn.Dto.Sorting;
 using RestApiLearn.Entities;
 using RestApiLearn.Services;
 using X.PagedList;
