@@ -7,10 +7,10 @@ namespace RestApiLearn.Sorting
 {
     public static class OrderMapper
     {
-        private static Dictionary<Type, Dictionary<string, OrderDestination>> _typeMap =
+        private static readonly Dictionary<Type, Dictionary<string, OrderDestination>> _typeMap =
             new Dictionary<Type, Dictionary<string, OrderDestination>>();
 
-        public static void Register<TSource, TDestination>()
+        public static void Register<TSource, TDestination>(Dictionary<string, OrderDestination> configMap = null)
         {
             var map = new Dictionary<string, OrderDestination>();
             var sourceNames = typeof(TSource).GetProperties().Select(p => p.Name.ToLower());
@@ -27,7 +27,15 @@ namespace RestApiLearn.Sorting
                 }
             }
 
-            _typeMap.Add(typeof(TDestination), map);
+            if (configMap != null)
+            {
+                foreach (var mappingKey in configMap.Keys)
+                {
+                    map[mappingKey] = configMap[mappingKey];
+                }
+            }
+
+            _typeMap[typeof(TDestination)] = map;
         }
 
         public static string MapTo<TDestination>(string orderBy)
@@ -54,7 +62,8 @@ namespace RestApiLearn.Sorting
                     ThrowException();
                 }
 
-                if (!map.ContainsKey(parts[0]))
+                string sourceFieldName = parts[0].ToLower();
+                if (!map.ContainsKey(sourceFieldName))
                 {
                     ThrowException();
                 }
@@ -82,7 +91,6 @@ namespace RestApiLearn.Sorting
                     ascending = true;
                 }
 
-                string sourceFieldName = parts[0].ToLower();
                 OrderDestination orderDestination = map[sourceFieldName];
                 if (orderDestination.Reverse)
                 {
@@ -96,7 +104,7 @@ namespace RestApiLearn.Sorting
                 }
             }
 
-            return string.Join(',', mappedFields);
+            return string.Join(", ", mappedFields);
 
             void ThrowException()
             {

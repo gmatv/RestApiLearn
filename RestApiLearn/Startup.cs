@@ -30,6 +30,8 @@ namespace RestApiLearn
 
             // services.AddAutoMapper(); // we need this when we register maps via AutoMapper.Profile
             AutomapperConfig.Initialize();
+            OrderMapperConfig.Initialize();
+
             services.AddMvc(options =>
                 {
                     options.Filters.Add<ExceptionFilter>();

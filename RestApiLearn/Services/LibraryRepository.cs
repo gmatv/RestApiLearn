@@ -86,7 +86,6 @@ namespace RestApiLearn.Services
                 authors = _context.Authors.Where(a => a.Genre.ToLower() == authorFilter.Genre.ToLower());
             }
 
-            //            authors = authors.OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
             // dynamic linq
             if (!string.IsNullOrWhiteSpace(orderBy))
             {
