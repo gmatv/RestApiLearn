@@ -10,6 +10,7 @@ using RestApiLearn.Entities;
 using RestApiLearn.Filters;
 using RestApiLearn.Helpers;
 using RestApiLearn.Services;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace RestApiLearn
 {
@@ -40,6 +41,11 @@ namespace RestApiLearn
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(GetType().Assembly));
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Rest API Learn", Version = "v1" });
+            });
+
             services.AddSingleton(Mapper.Instance);
             services.AddScoped<ILibraryRepository, LibraryRepository>();
         }
@@ -53,6 +59,16 @@ namespace RestApiLearn
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Rest API Learn V1");
+            });
 
             app.UseMvc();
         }

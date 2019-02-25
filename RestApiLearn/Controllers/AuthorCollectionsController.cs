@@ -66,7 +66,7 @@ namespace RestApiLearn.Controllers
             return Ok(authorDtos);
         }
 
-        [HttpGet("({ids})")]
+        [HttpDelete("({ids})")]
         public IActionResult DeleteAuthorCollection([ModelBinder(typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
         {
             if (ids == null)
